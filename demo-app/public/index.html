@@ -1,41 +1,10 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Acme Newsletter</title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 420px; margin: 60px auto; color: #1e293b; }
-    input, button { display: block; width: 100%; padding: 10px; margin: 8px 0; font-size: 15px;
-                    border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; }
-    button { background: #0d9488; color: white; border: none; cursor: pointer; font-weight: 600; }
-    #status { margin-top: 12px; font-weight: 600; }
-  </style>
+<head><meta charset="utf-8" /><title>Acme</title>
+<style>body{font-family:system-ui;max-width:420px;margin:60px auto;color:#1e293b}</style>
 </head>
 <body>
-  <h1>Join our newsletter</h1>
-  <label>Name <input id="name" placeholder="Ada Lovelace" /></label>
-  <label>Email <input id="email" type="email" placeholder="ada@example.com" /></label>
-  <button id="submit">Sign up</button>
-  <p id="status"></p>
-
-  <script>
-    document.getElementById("submit").addEventListener("click", async () => {
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      try {
-        // 🐛 PLANTED BUG: never checks res.ok — a 500 still shows success.
-        await fetch("/api/signup", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email }),
-        });
-        document.getElementById("status").textContent = "🎉 Thanks for signing up!";
-        document.getElementById("status").style.color = "#0d9488";
-      } catch (e) {
-        // Swallowed. User sees nothing on network failure either.
-        console.error("signup failed", e);
-      }
-    });
-  </script>
+  <h1>Acme</h1>
+  <p>Welcome! Newsletter coming soon.</p>
 </body>
 </html>

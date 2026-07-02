@@ -9,19 +9,6 @@ app.use(express.static(new URL("./public", import.meta.url).pathname));
 
 const signups = [];
 
-app.post("/api/signup", (req, res) => {
-  const { name, email } = req.body ?? {};
-  if (!name || !email) {
-    return res.status(400).json({ error: "name and email are required" });
-  }
-  // 🐛 PLANTED BUG: naive "sanitizer" blows up on plus-addressed emails
-  if (email.includes("+")) {
-    throw new Error("Invalid character in email"); // → 500
-  }
-  signups.push({ name, email, at: Date.now() });
-  res.json({ ok: true });
-});
-
 app.get("/api/signups", (_req, res) => res.json(signups));
 
 const port = process.env.PORT || 3000;
