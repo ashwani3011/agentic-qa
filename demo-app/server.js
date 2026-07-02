@@ -15,9 +15,9 @@ app.post("/api/signup", (req, res) => {
     return res.status(400).json({ error: "name and email are required" });
   }
   // 🐛 PLANTED BUG: naive "sanitizer" blows up on plus-addressed emails
-  if (email.includes("+")) {
-    throw new Error("Invalid character in email"); // → 500
-  }
+  // if (email.includes("+")) {
+  //   throw new Error("Invalid character in email"); // → 500
+  // }
   signups.push({ name, email, at: Date.now() });
   res.json({ ok: true });
 });
