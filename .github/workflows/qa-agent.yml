@@ -1,0 +1,47 @@
+name: Agentic QA
+on: pull_request
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps & browser
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Start app under test
+        run: |
+          npm run demo &
+          npx wait-on http://localhost:3000
+
+      - name: Get PR diff
+        run: gh pr diff ${{ github.event.pull_request.number }} > pr.diff
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Run QA agent
+        run: node src/index.js --url http://localhost:3000 --diff-file pr.diff
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+
+      - name: Upload replays (traces, videos, screenshots)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-replays
+          path: artifacts/
