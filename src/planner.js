@@ -11,14 +11,14 @@ export async function planTests({ title, description, diff }) {
     system:
       "You are a QA lead planning browser tests for a pull request. " +
       "Given the PR context, output a focused test plan as pure JSON " +
-      "(no markdown fences): an array of 2-5 tests, each " +
+      "(no markdown fences): an array of EXACTLY 3 tests, each " +
       '{"name": string, "type": "critical"|"edge"|"regression", ' +
       '"goal": string (one concrete, verifiable objective the agent can ' +
       "pursue in a browser, e.g. 'Submit the signup form with a valid " +
       "email and verify a success message appears AND the API call " +
       "succeeds')}. Cover the happy path, at least one edge case " +
       "(invalid/unusual input), and one regression check of nearby " +
-      "functionality. Keep goals specific to what the diff changed.",
+      "functionality. Exactly one critical, one edge, one regression test. Every goal must be a single, narrowly scoped action verifiable in under 10 browser steps — no open-ended exploration.",
     messages: [
       {
         role: "user",

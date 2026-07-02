@@ -1,4 +1,6 @@
-/node_modules
+.env
+.env.local
+node_modules/
 /dist
 /build
 /env
@@ -12,3 +14,4 @@
 /env.development.local
 /env.production.local
 /env.test.local
+.env.local

@@ -5,7 +5,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { Browser } from "./browser.js";
 
 const client = new Anthropic();
-const MAX_STEPS = 25;
+const MAX_STEPS = 10;
 
 const TOOLS = [
   {
@@ -83,11 +83,19 @@ Rules:
 - Severity: high = broken/misleading core flow or data loss; medium = degraded UX or unhandled error shown; low = minor.
 - Always finish by calling test_complete.`;
 
-export async function runTest({ baseUrl, test, artifactsDir, log = console.log }) {
+export async function runTest({
+  baseUrl,
+  test,
+  artifactsDir,
+  log = console.log,
+}) {
   const browser = new Browser(baseUrl, artifactsDir);
   await browser.launch(test.name);
   const issues = [];
-  let result = { status: "failed", summary: "Agent did not complete within step limit." };
+  let result = {
+    status: "failed",
+    summary: "Agent did not complete within step limit.",
+  };
 
   const messages = [
     {
@@ -119,7 +127,8 @@ export async function runTest({ baseUrl, test, artifactsDir, log = console.log }
       for (const tu of toolUses) {
         let output;
         try {
-          if (tu.name === "navigate") output = await browser.navigate(tu.input.path);
+          if (tu.name === "navigate")
+            output = await browser.navigate(tu.input.path);
           else if (tu.name === "click") {
             log(`  🖱  click [${tu.input.ref}]`);
             output = await browser.click(tu.input.ref);
