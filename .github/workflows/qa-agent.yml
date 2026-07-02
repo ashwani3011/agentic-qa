@@ -9,6 +9,7 @@ permissions:
 
 jobs:
   qa:
+    name: 🤖 Agentic QA
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
