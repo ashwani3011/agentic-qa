@@ -1,6 +1,8 @@
 name: Agentic QA
 on: pull_request
-
+concurrency:
+  group: qa-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 permissions:
   contents: read
   pull-requests: write
@@ -45,3 +47,10 @@ jobs:
         with:
           name: qa-replays
           path: artifacts/
+
+      - name: Publish report to run summary
+        if: always()
+        run: |
+          if [ -f artifacts/report.md ]; then
+            cat artifacts/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
