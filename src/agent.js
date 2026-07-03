@@ -89,6 +89,7 @@ export async function runTest({
   artifactsDir,
   log = console.log,
 }) {
+  const startedAt = Date.now();
   const browser = new Browser(baseUrl, artifactsDir);
   await browser.launch(test.name);
   const issues = [];
@@ -161,5 +162,5 @@ export async function runTest({
   } finally {
     await browser.close();
   }
-  return { ...result, issues };
+  return { ...result, issues, duration: Date.now() - startedAt };
 }
