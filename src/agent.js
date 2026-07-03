@@ -81,7 +81,9 @@ Rules:
 - Report issues with report_issue as soon as you verify them — include the exact user action, observed behavior, and the console/network evidence.
 - Do not report an issue you have not reproduced. Do not report styling nitpicks.
 - Severity: high = broken/misleading core flow or data loss; medium = degraded UX or unhandled error shown; low = minor.
-- Always finish by calling test_complete.`;
+- Always finish by calling test_complete.
+- The moment the goal is verified, IMMEDIATELY call test_complete. Never re-verify or repeat actions already confirmed.
+- Never navigate directly to API endpoints (/api/...) — observe network behavior only through the failedRequests in snapshots.`;
 
 export async function runTest({
   baseUrl,

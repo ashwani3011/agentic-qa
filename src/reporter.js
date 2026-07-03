@@ -7,12 +7,16 @@ export function buildReport(planned, results) {
   const badge = { high: "🔴", medium: "🟠", low: "🟡" };
   const fmt = (ms) => (ms ? `${(ms / 1000).toFixed(0)}s` : "—");
 
+  const failed = results.filter((r) => r.status !== "passed").length;
+
   const verdict =
     high > 0
       ? `> [!CAUTION]\n> ### ⛔ Merge blocked — ${high} high-severity issue${high > 1 ? "s" : ""} found`
-      : allIssues.length > 0
-        ? `> [!WARNING]\n> ### ⚠️ Passed with ${allIssues.length} non-blocking issue${allIssues.length > 1 ? "s" : ""}`
-        : `> [!TIP]\n> ### ✅ All tests passed — no issues found`;
+      : failed > 0
+        ? `> [!WARNING]\n> ### ⚠️ ${failed} test${failed > 1 ? "s" : ""} did not complete — no blocking issues, but worth a look`
+        : allIssues.length > 0
+          ? `> [!WARNING]\n> ### ⚠️ Passed with ${allIssues.length} non-blocking issue${allIssues.length > 1 ? "s" : ""}`
+          : `> [!TIP]\n> ### ✅ All tests passed — no issues found`;
 
   const lines = [
     MARKER,
