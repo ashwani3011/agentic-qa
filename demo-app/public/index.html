@@ -24,11 +24,16 @@
       const email = document.getElementById("email").value;
       try {
         // 🐛 PLANTED BUG: never checks res.ok — a 500 still shows success.
-        await fetch("/api/signup", {
+       const res = await fetch("/api/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name, email }),
         });
+        if (!res.ok) {
+          document.getElementById("status").textContent = "Signup failed";
+          document.getElementById("status").style.color = "#ef4444";
+          return;
+        }
         document.getElementById("status").textContent = "🎉 Thanks for signing up!";
         document.getElementById("status").style.color = "#0d9488";
       } catch (e) {
